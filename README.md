@@ -2,6 +2,8 @@
 
 A standalone web application that visualizes Google Earth Engine data (DEM, Roads) with interface.
 
+![Example Screenshot](public/images/example.png)
+
 ## Features
 
 - **Earth Engine Integration**: Fetches real-time data from Google Earth Engine.
