@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <title>Earth Engine Layers Viewer - Slideshow App</title>
+    <link rel="icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="hud-container">
+        <div class="corner-tl"></div>
+        <div class="corner-tr"></div>
+        <div class="corner-bl"></div>
+        <div class="corner-br"></div>
+        <div class="crosshair"></div>
+
+        <div class="hud-top">
+            <h1>Earth Engine Viewer // <span style="font-size: 0.8em; opacity: 0.7;">SYS.V.1.0</span></h1>
+
+            <form>
+                <div style="margin-bottom: 5px; border-bottom: 1px solid #555; padding-bottom: 5px;">TARGET SELECTION
+                </div>
+                <select id="region-select">
+                    <option value="FUJI">Mount Fuji [JPN]</option>
+                    <option value="GRAND_CANYON">Grand Canyon [USA]</option>
+                    <option value="RIDGECREST_CA">Ridgecrest [USA]</option>
+                </select>
+
+                <div style="margin-top: 10px; margin-bottom: 5px; border-bottom: 1px solid #555; padding-bottom: 5px;">
+                    DATA LAYER</div>
+                <select id="layer-select">
+                    <option value="DEM">DEM [ELEVATION]</option>
+                    <option value="ROADS">ROADS [VECTOR]</option>
+                    <option value="DEM_ROADS">COMPOSITE [DEM+ROADS]</option>
+                </select>
+
+                <label style="margin-top: 10px;">
+                    <input type="checkbox" id="bypass-cache" />
+                    [BYPASS CACHE]
+                </label>
+
+                <button id="load-button" style="margin-top: 10px;">INITIALIZE LOAD</button>
+            </form>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%;">
+            <p id="stats">
+                ELEVATION DATA:<br>
+                MIN: <span id="stat-min">0000.0</span> M<br>
+                MAX: <span id="stat-max">0000.0</span> M<br>
+                MEAN: <span id="stat-mean">0000.0</span> M
+            </p>
+            <p id="info">SYSTEM READY. WAITING FOR INPUT.</p>
+        </div>
+    </div>
+
+    <article id="ee-article"></article>
+
+    <div id="loading">
+        SYSTEM PROCESSING...<br>
+        <span style="font-size: 0.5em;">FETCHING SATELLITE DATA</span>
+    </div>
+    <div id="error"></div>
+
+    <script type="module" src="/main.ts"></script>
+</body>
+
+</html>

@@ -1,0 +1,9 @@
+{
+  "endpoints": {
+    "logService": "http://localhost:53224",
+    "apiService": "http://localhost:54937",
+    "viteService": "http://localhost:52238",
+    "chromeService": "http://localhost:52453",
+    "webServer": "http://localhost:54047"
+  }
+}
