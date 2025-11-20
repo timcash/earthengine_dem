@@ -22,7 +22,10 @@ A standalone web application that visualizes Google Earth Engine data (DEM, Road
     ```
 
 2.  **Configure Credentials**:
-    Place your Google Earth Engine private key file named `earthengine.json` in the root directory of the project.
+    **IMPORTANT:** You must obtain Google Earth Engine credentials to run this application.
+    1. Create a Service Account in your Google Cloud Console with access to the Earth Engine API.
+    2. Download the private key as a JSON file.
+    3. Rename the file to `earthengine.json` and place it in the root directory of this project.
 
 ## Running the Application
 
