@@ -2,7 +2,7 @@
 
 A standalone web application that visualizes Google Earth Engine data (DEM, Roads) with interface.
 
-![Example Screenshot](public/images/example.png)
+![Example Screenshot](docs/example.png)
 
 ## Features
 

@@ -34,3 +34,4 @@ public/images/earthengine/*
 
 # Test Screenshots
 *.png
+!docs/*.png
