@@ -2,18 +2,20 @@ import puppeteer from 'puppeteer';
 
 async function runTest() {
     console.log('Starting test...');
-    const browser = await puppeteer.launch({
-        headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        dumpio: true
-    });
-    const page = await browser.newPage();
+    let browser;
 
     try {
+        browser = await puppeteer.launch({
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            dumpio: false // Reduced noise
+        });
+        const page = await browser.newPage();
+
         console.log('Navigating to app...');
         // Wait for the server to be ready. In a real CI, we'd use wait-on or similar.
         // Here we assume the user runs the test while the app is running.
-        await page.goto('http://localhost:5173', { waitUntil: 'networkidle0', timeout: 30000 });
+        await page.goto('http://localhost:3000', { waitUntil: 'networkidle0', timeout: 30000 });
 
         console.log('Checking for HUD elements...');
         await page.waitForSelector('.hud-container');
@@ -32,17 +34,7 @@ async function runTest() {
         await page.waitForSelector('#loading', { visible: true });
         console.log('Loading indicator appeared.');
 
-        // Wait for either image or error
-        // We race these two promises
-        const imageLoaded = page.waitForSelector('#ee-article', { visible: true, timeout: 60000 })
-            .then(() => 'image');
-        const errorShown = page.waitForSelector('#error', { visible: true, timeout: 60000 })
-            .then(() => 'error');
-
-        // Note: ee-article is always there, but we check if background image is set or if loading disappears
-        // Actually, the code sets display: block on #layer-image if it existed, but here it sets background image on article.
-        // Let's wait for loading to disappear.
-
+        // Wait for loading to disappear
         await page.waitForSelector('#loading', { hidden: true, timeout: 60000 });
         console.log('Loading indicator disappeared.');
 
@@ -63,11 +55,24 @@ async function runTest() {
 
     } catch (error) {
         console.error('Test failed:', error);
-        await page.screenshot({ path: 'error_state.png' });
+        if (browser) {
+            const pages = await browser.pages();
+            if (pages.length > 0) {
+                await pages[0].screenshot({ path: 'error_state.png' }).catch(() => { });
+            }
+        }
         process.exit(1);
     } finally {
-        await browser.close();
+        if (browser) {
+            try {
+                await browser.close();
+            } catch (e) {
+                // Ignore cleanup errors
+                console.log('Browser cleanup completed');
+            }
+        }
     }
 }
 
 runTest();
+
