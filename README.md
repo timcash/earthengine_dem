@@ -1,57 +1,79 @@
 # Earth Engine Layers Viewer
 
-A standalone web application that visualizes Google Earth Engine data (DEM, Roads) with interface.
+A web application that visualizes Google Earth Engine data layers with a video game HUD-style interface. Built with Bun, TypeScript, and vanilla JavaScript.
 
 ![Example Screenshot](docs/example.png)
 
 ## Features
 
-- **Earth Engine Integration**: Fetches real-time data from Google Earth Engine.
-- **Layer Selection**: Toggle between Digital Elevation Models (DEM), Roads, or a composite view.
-- **Region Selection**: Pre-defined regions like Mount Fuji, Grand Canyon, and Ridgecrest.
-- **Caching**: Caches Earth Engine images locally for faster subsequent loads.
+- Interactive HUD-style interface
+- Display Digital Elevation Models (DEM)
+- Display OpenStreetMap road data
+- Composite DEM + Roads visualization
+- Multiple region presets (Mount Fuji, Grand Canyon, Ridgecrest CA)
+- Elevation statistics display
+- Caching system for faster loading
 
 ## Prerequisites
 
-- Node.js (v18+ recommended)
-- A valid Google Earth Engine private key JSON file.
+- [Bun](https://bun.sh) (v1.0 or later)
+- Google Earth Engine service account credentials
 
-## Setup
+## Installation
 
-1.  **Install Dependencies**:
-    ```bash
-    npm install
-    ```
+1. Install dependencies:
+```bash
+bun install
+```
 
-2.  **Configure Credentials**:
-    **IMPORTANT:** You must obtain Google Earth Engine credentials to run this application.
-    1. Create a Service Account in your Google Cloud Console with access to the Earth Engine API.
-    2. Download the private key as a JSON file.
-    3. Rename the file to `earthengine.json` and place it in the root directory of this project.
+2. Set up Earth Engine credentials:
+   - Obtain a service account key from [Google Earth Engine](https://earthengine.google.com/)
+   - Save the key as `earthengine.json` in the project root
+   - The key should contain:
+     - `client_email`: Your service account email
+     - `private_key`: Your private key
+     - Other standard service account fields
 
 ## Running the Application
 
-To run both the client (Vite) and the server (Express) concurrently:
+### Development Server
 
+Start the development server:
 ```bash
-npm run dev
+bun run dev
 ```
 
-- The application will be available at `http://localhost:5173`.
-- The API server runs on `http://localhost:3000`.
+The application will be available at `http://localhost:3000`
 
-## Testing
+### Testing
 
-To run the Puppeteer integration test:
-
+Run the Puppeteer tests:
 ```bash
-npm test
+bun run test.ts
 ```
-
-This will launch a headless browser, navigate to the app, and verify that the layers load correctly.
 
 ## Project Structure
 
-- `src/client`: Frontend code (Vite, TypeScript, CSS).
-- `src/server`: Backend code (Express, Earth Engine Service).
-- `public`: Static assets and cached images.
+```
+earthengine/
+├── src/
+│   ├── index.ts              # Bun server with API routes and bundling
+│   ├── client/
+│   │   ├── index.html        # Main HTML file
+│   │   ├── main.ts           # Client-side TypeScript (bundled by Bun)
+│   │   └── styles.css        # HUD styles
+│   └── server/
+│       └── earthengine_service.ts  # Earth Engine API integration
+├── public/                   # Static assets and cached images
+├── earthengine.json         # Earth Engine credentials (gitignored)
+└── test.ts                  # Puppeteer tests
+```
+
+## Architecture
+
+- **Runtime**: Bun (replaces Node.js)
+- **Server**: Bun.serve (replaces Express)
+- **Bundler**: Bun's native bundler (replaces Vite)
+- **On-the-fly Compilation**: TypeScript to JavaScript bundling happens automatically
+- **API**: RESTful endpoints for Earth Engine data
+- **Caching**: File-based caching for Earth Engine responses
